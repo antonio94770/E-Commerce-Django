@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Grazie per l'acquisto
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-md-offset-4">
+                <h3 class="page-header">Grazie per aver acquistato da noi
+                </h3>
+                <p>Lascia una valutazione per <strong>{{ username }}</strong>.</p>
+				<div class="form-check">
+					<form method="post">{% csrf_token %}
+						{{form.as_table}}
+						<br><button type="submit" class="btn btn-primary">Vota</button>
+					</form>
+				</div>
+			</div>
+        </div>
+    </div>
+{% endblock %}

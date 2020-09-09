@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Le mie inserzioni
+{% endblock %}
+
+{% block content %} 
+
+	<div class="container-fluid">
+		<div class="row"> 
+		
+			<form method="post">{% csrf_token %}
+				{{ form.as_p }}
+				<input type="submit" value="Applica" />
+			</form>
+
+	
+			<div class="col-sm-12 blog-main" style="margin-top:3%">
+			
+			{% if categoria or regione%} <h3>Filtri: {{regione.nome}},{{categoria.nome}} </h3 > {% endif %}
+
+				<div class="blog-post" style="margin-top:2%">
+					<div class="row">
+						{% for prodotto in prodotti %}
+							<div class="col-md-4">
+							<div class="thumbnail">
+								<a href="{{ prodotto.get_absolute_url_for_my_list }}">
+									<img src="{% if prodotto.immagine %} {{ prodotto.immagine.url }} {% else %} {% static 'inserzioni/img/default.jpg' %} {% endif %}" alt="..." style="height: 400px; width: auto">
+								</a>
+								<div class="caption">
+									<h3 class="text-center">
+										<a style= "display: block;   width: 600px;   overflow: hidden;   white-space: nowrap;   text-overflow: ellipsis;" href="{{ prodotto.get_absolute_url_for_my_list }}">{{ prodotto.nome }}</a>
+									</h3>
+									<p class="text-center">{{ prodotto.prezzo }} EURO</p>
+								</div>
+							</div>
+							</div>
+						{% endfor %}
+					</div>
+
+
+				</div><!-- /.blog-post -->
+
+			</div><!-- /.blog-main -->
+			
+		</div><!-- /.row -->
+
+	</div><!-- /.container -->
+{% endblock %}

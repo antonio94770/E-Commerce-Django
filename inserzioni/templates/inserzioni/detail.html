@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    {% if categoria %}{{ categoria.name }} {% else %} Prodotti {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 blog-main">
+      <div class="blog-post">
+        <div class="row">
+          <div class="card">
+            <div class="card-body">
+              <div class="col-md-6 text-right">
+                <img src="{% if prodotto.immagine %} {{ prodotto.immagine.url }} {% else %} {% static 'inserzioni/img/default.jpg' %} {% endif %}" alt="..." style="height: 200px; width: auto">
+              </div>
+              <div class="col-md-6" style="padding-left: 20px">
+                <h3>{{ prodotto.nome }} [<strong>{{ prodotto.user }}</strong>]</h3>
+                <strong> Recensioni utente {{prodotto.user.vote_average}} </strong>(n.voti:{{prodotto.user.vote_count}})</h5><br>
+                {% if prodotto.user.phone_number %}
+                	<h6>Tel. {{prodotto.user.phone_number}} </h6>
+                {% endif %}
+                <h6><a href="{{ prodotto.categoria.get_absolute_url }}">{{ prodotto.categoria }}</a></h6>
+                <h6><a href="{{ prodotto.regione.get_absolute_url }}">{{ prodotto.regione }}</a></h6>
+                <p class="text-muted">{{ prodotto.prezzo }} EURO</p>
+                <p>{{ prodotto.descrizione|safe|linebreaksbr }}</p>
+                {% if compratore %}
+                  <form method="post" action="{% url "ordini:aggiungi_ordine"  prodotto.id prodotto.slug%}">{% csrf_token %}
+                  {{ form.as_p }}
+                  <input type="submit" value="Compra" class="btn btn-primary" style="background-color:#FF7F50;border-color:#FF7F50">
+                  </form>
+                  <br><form method="get" action="{% url "messaggi:crea_dialogo"  prodotto.user.id %}">{% csrf_token %}
+                  <input type="submit" value="Contatta" class="btn btn-primary" style="background-color:#FF7F50;border-color:#FF7F50">
+                  </form>
+                {% endif %}
+                {% if venditore%}
+                  <form method="get" action="{% url "inserzioni:modifica_prodotti"  prodotto.id prodotto.slug%}">{% csrf_token %}
+                  {{ form.as_p }}
+                  <input type="submit" value="Modifica" class="btn btn-primary" style="background-color:#FF7F50;border-color:#FF7F50">
+                  </form>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.blog-post -->
+    </div>
+    <!-- /.blog-main -->
+  </div>
+  <!-- /.row -->
+</div>
+<!-- /.container -->
+{% endblock %}

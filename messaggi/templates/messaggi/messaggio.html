@@ -1,0 +1,13 @@
+{% url 'users:profile' message_item.author.user.username as the_user_url%}
+{% load tz %}
+<div class="list-group-item">
+    <div class="reply-body">
+        <ul class="list-inline">
+            <li class="drop-left-padding">
+                <strong class="list-group-item-heading"><a href="{{ the_user_url }}">{{ message_item.author.user.username }}</a></strong>
+            </li>
+            <li class="pull-right text-muted"><small>{{ message_item.pub_date }}</small></li>
+        </ul>
+        <div>{{ message_item.message|safe }}</div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-sm-3 blog-main">
+	<h2>Modifica profilo</h2>
+	<form method="POST">{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit">Modifica</button>
+	</form>
+</div>
+{% endblock %}

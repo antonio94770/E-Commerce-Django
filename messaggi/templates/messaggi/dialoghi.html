@@ -1,0 +1,36 @@
+{% include "base.html" %}
+{% load static %}
+{% load tz %}
+{% load get_companion %}
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+<input type="submit" value="Ok">
+</form>
+<div class="panel" style="margin-top: 4%">
+    {% if chats.count == 0 %}
+        <div class="panel panel-body">Non ci sono dialoghi con i filtri richiesti</div>
+    {% endif %}
+    {% for chat in chats %}
+        {% if chat.message_set.count != 0 %}
+            {% with last_message=chat.message_set.last %}
+                {% get_companion user_profile chat as companion %}
+                <a class="list-group-item">
+                    <div class="reply-body">
+                        <ul class="list-inline">
+                            <li class="drop-left-padding">
+                                <strong class="list-group-item-heading">{{ companion.user.username }}</strong>
+                            </li>
+                            <li class="pull-right text-muted"><small>{{ chat.date }}</small></li>
+                        </ul>
+                        <div>
+                            <div class="attached-reply-body">{{ last_message.author }}: {{ last_message.message|truncatechars_html:"200"|safe|striptags }}</div>
+                        </div>
+    					<form class="text-right method="get" action="{% url "messaggi:crea_dialogo"  companion.user.id %}">{% csrf_token %}
+    						<input style="background-color:#FF7F50;border-color:#FF7F50" type="submit" value="Accedi" class="btn btn-primary">
+    					</form>
+                    </div>
+                </a>
+            {% endwith %}
+        {% endif %}
+    {% endfor %}
+</div>

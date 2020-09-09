@@ -1,0 +1,16 @@
+from django.conf.urls import url, include
+from django.contrib.auth import views as auth_views
+
+from utenti import views as utenti_views
+
+app_name = 'utenti'
+
+urlpatterns = [
+    url(r'^login/$', auth_views.login,{'template_name': 'utenti/login.html'}, name='login'),
+    url(r'^logout/$', auth_views.logout, name='logout'),
+    url(r'^signup/$', utenti_views.signup, name='signup'),
+    url(r'^account_activation_sent/$', utenti_views.account_activation_sent, name='account_activation_sent'),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', utenti_views.activate, name='activate'),
+	url(r'^votazione/(?P<username>[\w.@+-]+)/$', utenti_views.votazione, name='votazione'),
+	url(r'^modifica/$', utenti_views.modifica_profilo, name='modifica_profilo')
+]

@@ -1,0 +1,61 @@
+{% load static %}
+<script>
+function startTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('orologio').innerHTML =
+    h + ":" + m + ":" + s;
+    var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+    if (i < 10) {i = "0" + i};
+    return i;
+}
+</script>
+
+<body onload="startTime()">
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0px; background-color: #FF7F50;">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	      <span class="sr-only">Toggle navigation</span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="{% url 'inserzioni:lista_prodotti' %}" style="color: #ffffff">Home</a>
+	      {% if request.user.is_authenticated %}
+	        <a class="navbar-brand" href="{% url 'inserzioni:crea_inserzione' %}" style="color: #ffffff">Crea Inserzione</a>
+	        <a class="navbar-brand" href="{% url 'inserzioni:lista_mie_inserzioni' %}" style="color: #ffffff">Le mie inserzioni</a>
+	        <a class="navbar-brand" href="{% url 'ordini:storico_vendite_ordine' %}" style="color: #ffffff">Storico vendite</a>
+	        <a class="navbar-brand" href="{% url 'ordini:storico_acquisti_ordine' %}" style="color: #ffffff">Storico acquisti</a>
+	        <a class="navbar-brand" href="{% url 'messaggi:dialoghi' %}" style="color: #ffffff">Messaggi</a>
+	      {% endif %}
+	    </div>
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav navbar-right">
+	        
+	          {% if request.user.is_authenticated %}
+				<li><a style="color: #004c99" id="orologio"></a></li>
+	            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color: #ffffff">{{ request.user.username }}<b class="caret"></b></a>
+	            <ul class="dropdown-menu">
+	              <li><a href="{% url 'utenti:modifica_profilo' %}">Modifica</a></li>
+	              <li><a href="{% url 'utenti:logout' %}">Logout</a></li>
+	            </ul>
+	          {% else %}
+	              <li class="divider"></li>
+	              <li><a style="color: #004c99" id="orologio"></a></li>
+	              <li><a href="{% url 'utenti:login' %}" style="color: #ffffff">Login</a></li>
+	              <li><a href="{% url 'utenti:signup' %}" style="color: #ffffff">Registrati</a></li>
+	            </ul>
+	          {% endif %}
+	        </li>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+</body>
